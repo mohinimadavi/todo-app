@@ -5,7 +5,7 @@ import toDoListData from "../data/ToDoListData";
 
 const ToDo = ({ id }) => {
     const [showAddTask, setShowAddTask] = useState(true);
-    const [newTask, setNewTask] = useState({text:"", completed:false});
+    const [newTask, setNewTask] = useState({ text: "", completed: false });
     const data = toDoListData.filter(item => item.id == id)[0];
 
     const [tasks, setTasks] = useState(data.tasks);
@@ -13,7 +13,7 @@ const ToDo = ({ id }) => {
         setShowAddTask(false);
     }
     const handleChange = (e) => {
-        setNewTask({text:e.target.value, completed:false});
+        setNewTask({ text: e.target.value, completed: false });
     }
     const onAddTaskClick = () => {
         if (newTask.text)
@@ -26,15 +26,19 @@ const ToDo = ({ id }) => {
     }
 
     useEffect(() => {
-        setNewTask({text:"", completed:false});
+        setNewTask({ text: "", completed: false });
     }, [tasks]);
+
+    const onTaskStatusChanged = (taskName, completed) => {
+        setTasks(tasks.map(task =>(task.text === taskName) ? { ...task, completed } : task));
+    }
 
     return (
         <div className="col-sm-3" style={{ marginBottom: "2rem" }}>
             <div className="card" style={{ width: "18rem" }}>
                 <div className="card-header">{data.title}</div>
             </div>
-            <ToDoTasks tasks={tasks} />
+            <ToDoTasks tasks={tasks} onTaskStatusChanged={onTaskStatusChanged} />
             <div className="card-footer">
                 <div className={showAddTask ? "" : "hidden"}>
                     <button onClick={onClick}>+ Add a task</button>
@@ -45,7 +49,7 @@ const ToDo = ({ id }) => {
                         <button className="btn btn-primary me-md-2" type="button" onClick={onAddTaskClick}>Add</button>
                         <button className="btn btn-primary" type="button" onClick={onCloseClick}>Close</button>
                         {/* <button type="button" class="btn-close" aria-label="Close" onClick={onCloseClick}></button> */}
-                    </div>                    
+                    </div>
                 </div>
             </div>
         </div>

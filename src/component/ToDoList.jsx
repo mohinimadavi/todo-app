@@ -1,7 +1,7 @@
 import ToDo from "./ToDo"
 const ToDoList = ({toDoListIds}) => {
     const formattedToDoList = toDoListIds.map(id => {
-        return <ToDo id={id}/>
+        return <ToDo key={id} id={id}/>
     })
     
     return (
